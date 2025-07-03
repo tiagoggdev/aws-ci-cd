@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-content-config
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Grupo AWS Arquitectura en la Nube</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                background: linear-gradient(to right, #87CEFA, #4682B4);
+                color: white;
+                text-align: center;
+            }
+            h1 {
+                font-size: 3em;
+                margin-top: 20%;
+                text-shadow: 2px 2px #005f73;
+            }
+            p {
+                font-size: 1.5em;
+                margin-top: 1%;
+                color: #e0f7fa;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>¡Bienvenidos al Grupo de AWS!</h1>
+        <p>Desplegado en EKS con ALB + Autoscaling</p>
+    </body>
+    </html>
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grupo12-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grupo12-app
+  template:
+    metadata:
+      labels:
+        app: grupo12-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: web-content
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: web-content
+          configMap:
+            name: web-content-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grupo12-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: grupo12-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
