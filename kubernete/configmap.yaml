@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-config
+  namespace: default
+data:
+  app.name: "AWS Felicitaciones App"
+  app.version: "2025.1.0"
+  app.environment: "production"
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>¡Felicitaciones Equipo AWS!</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Arial', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+            }
+            
+            .container {
+                text-align: center;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                padding: 3rem;
+                border-radius: 20px;
+                box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                max-width: 600px;
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-20px); }
+            }
+            
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                background: linear-gradient(45deg, #FFD700, #FFA500);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+                opacity: 0.9;
+            }
+            
+            .achievement {
+                background: rgba(255, 255, 255, 0.2);
+                padding: 1.5rem;
+                border-radius: 15px;
+                margin: 1rem 0;
+                border-left: 5px solid #FFD700;
+            }
+            
+            .tech-stack {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 2rem;
+                flex-wrap: wrap;
+            }
+            
+            .tech-item {
+                background: rgba(255, 255, 255, 0.2);
+                padding: 0.8rem 1.2rem;
+                border-radius: 25px;
+                margin: 0.5rem;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+            
+            .tech-item:hover {
+                transform: translateY(-5px);
+                background: rgba(255, 255, 255, 0.3);
+            }
+            
+            .footer {
+                margin-top: 2rem;
+                font-size: 1rem;
+                opacity: 0.8;
+            }
+            
+            .sparkle {
+                display: inline-block;
+                animation: sparkle 2s linear infinite;
+            }
+            
+            @keyframes sparkle {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.5; transform: scale(1.2); }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🎉 ¡Felicitaciones Equipo AWS! <span class="sparkle">✨</span></h1>
+            <p class="subtitle">¡Han desplegado exitosamente en EKS con Kubernetes 1.33!</p>
+            
+            <div class="achievement">
+                <h3>🚀 Logros Alcanzados</h3>
+                <p>✅ Clúster EKS configurado correctamente</p>
+                <p>✅ Application Load Balancer implementado</p>
+                <p>✅ Auto Scaling configurado</p>
+                <p>✅ Aplicación web funcionando perfectamente</p>
+            </div>
+            
+            <div class="tech-stack">
+                <div class="tech-item">Kubernetes 1.33</div>
+                <div class="tech-item">Amazon EKS</div>
+                <div class="tech-item">ALB</div>
+                <div class="tech-item">Auto Scaling</div>
+            </div>
+            
+            <div class="footer">
+                <p>🏗️ Construido con las mejores prácticas de 2025</p>
+                <p>⚡ Potenciado por Amazon Web Services</p>
+            </div>
+        </div>
+        
+        <script>
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.background = '#FFD700';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.left = Math.random() * window.innerWidth + 'px';
+                particle.style.top = window.innerHeight + 'px';
+                particle.style.zIndex = '1000';
+                
+                document.body.appendChild(particle);
+                
+                const animation = particle.animate([
+                    { transform: 'translateY(0px)', opacity: 1 },
+                    { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+                ], {
+                    duration: 3000,
+                    easing: 'linear'
+                });
+                
+                animation.onfinish = () => particle.remove();
+            }
+            
+            setInterval(createParticle, 300);
+        </script>
+    </body>
+    </html>
