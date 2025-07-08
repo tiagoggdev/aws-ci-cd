@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Gestión Usuarios DynamoDB</title>
+<style>
+body{font-family:Segoe UI,Arial;background:linear-gradient(120deg,#6a11cb,#2575fc);margin:0;padding:0;color:#333}
+.container{max-width:900px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.15)}
+h1{text-align:center;margin-top:0}
+label{font-weight:600}
+input,select{width:100%;padding:8px 10px;margin:6px 0 15px;border:1px solid #ccc;border-radius:6px}
+.btn{padding:10px 16px;border:none;border-radius:6px;font-weight:600;color:#fff;cursor:pointer}
+.create{background:#28a745}.update{background:#ffc107;color:#000}.connect{background:#007bff}
+.list,pre{background:#f8f9fa;padding:15px;border-radius:8px;overflow:auto}
+.card{background:#eef1f5;padding:15px;border-radius:10px;box-shadow:0 3px 6px rgba(0,0,0,.1);margin-bottom:15px}
+.card h3{margin:0 0 8px;font-size:1.1rem}
+.badge{display:inline-block;font-size:.75rem;padding:2px 6px;border-radius:12px;color:#fff;background:#6c63ff}
+.card button{margin-right:8px}
+.edit{background:#ff9f43}.delete{background:#ff5252}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Cliente DynamoDB</h1>
+  <label>URL Base API</label>
+  <input id="apiUrl" placeholder="https://xxxx.execute-api.us-east-1.amazonaws.com/prodstage">
+  <button class="btn connect" onclick="testConn()">Probar Conexión</button>
+  <hr>
+  <label>ID (solo para actualizar)</label>
+  <input id="userId" type="number" placeholder="Dejar vacío para crear">
+  <label>Nombre</label>
+  <input id="userName" placeholder="Nombre completo">
+  <label>Email</label>
+  <input id="userEmail" type="email" placeholder="correo@ejemplo.com">
+  <label>Rol</label>
+  <select id="userRole">
+    <option value="user">user</option>
+    <option value="admin">admin</option>
+    <option value="moderator">moderator</option>
+  </select>
+  <button class="btn create" onclick="saveUser(false)">Crear</button>
+  <button class="btn update" onclick="saveUser(true)">Actualizar</button>
+  <hr>
+  <button class="btn connect" onclick="getAll()">Obtener Todos</button>
+  <h2>Lista de Usuarios</h2>
+  <div id="users" class="list"></div>
+  <h2>Respuesta de la API</h2>
+  <pre id="resp">Esperando interacción…</pre>
+</div>
+<script>
+let base='';
+function api(){return base.endsWith('/')?base.slice(0,-1):base}
+function show(r){document.getElementById('resp').textContent=typeof r==='string'?r:JSON.stringify(r,null,2)}
+function testConn(){base=document.getElementById('apiUrl').value.trim();if(!base)return alert('URL requerida');fetch(api()+'/users').then(r=>r.json()).then(d=>{show(d);alert('Conexión OK')}).catch(e=>show(e))}
+function payload(){return{ name:document.getElementById('userName').value.trim(),
+               email:document.getElementById('userEmail').value.trim(),
+               role:document.getElementById('userRole').value}}
+function saveUser(isUpdate){
+ const id=document.getElementById('userId').value.trim();
+ const body=payload();
+ if(!body.name||!body.email)return alert('Nombre y Email obligatorios');
+ const method=isUpdate?'PUT':'POST';
+ const url=isUpdate?api()+'/users/'+id:api()+'/users';
+ if(isUpdate&&!id)return alert('ID requerido para actualizar');
+ fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+ .then(r=>r.json()).then(d=>{show(d);getAll();})
+ .catch(e=>show(e))
+}
+function card(u){
+ return `<div class="card"><h3>Usuario: ${u.name}</h3>
+ <p><strong>ID:</strong> ${u.id}</p>
+ <p><strong>Email:</strong> ${u.email}</p>
+ <p><strong>Rol:</strong> <span class="badge">${u.role}</span></p>
+ <button class="btn edit" onclick="fill(${u.id},'${u.name}','${u.email}','${u.role}')">Editar</button>
+ <button class="btn delete" onclick="delUser(${u.id})">Eliminar</button></div>`
+}
+function fill(id,n,e,r){document.getElementById('userId').value=id;
+document.getElementById('userName').value=n;
+document.getElementById('userEmail').value=e;
+document.getElementById('userRole').value=r;}
+function getAll(){fetch(api()+'/users').then(r=>r.json()).then(d=>{show(d);
+ if(d.success){document.getElementById('users').innerHTML=d.data.map(card).join('')} })
+ .catch(e=>show(e))}
+function delUser(id){if(!confirm('¿Eliminar usuario '+id+'?'))return;
+ fetch(api()+'/users/'+id,{method:'DELETE'}).then(r=>r.json()).then(d=>{show(d);getAll();}).catch(e=>show(e))}
+</script>
+</body>
+</html>
