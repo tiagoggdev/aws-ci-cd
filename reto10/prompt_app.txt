@@ -1,0 +1,73 @@
+Crea una aplicación Python Flask profesional para SuperMart con las siguientes especificaciones:
+**FUNCIONALIDADES REQUERIDAS:**
+1. Dashboard principal con métricas:
+   - Total productos en inventario
+   - Ventas del día actual
+   - Ingresos totales del día
+   - Productos con stock bajo (<10 unidades)
+   - Gráfico de ventas por categoría
+
+2. Gestión de Productos:
+   - Tabla responsiva con todos los productos
+   - Filtros por categoría y proveedor
+   - Buscador en tiempo real
+   - Alertas visuales para stock bajo
+
+3. Registro de Ventas:
+   - Formulario intuitivo para nuevas ventas
+   - Validación automática de stock
+   - Historial completo de ventas
+   - Cálculo automático de totales
+
+4. Reportes:
+   - Página de reportes con gráficos
+   - Chart.js para visualizaciones
+   - Ventas por día, categoría y proveedor
+
+**DISEÑO Y UX:**
+- Tema: Colores azul corporativo (#2563eb) y verde (#059669)
+- Navbar con logo "SuperMart Pro" e íconos
+- Layout responsivo (móvil + desktop)
+- Tarjetas modernas para estadísticas
+- Tablas con paginación y búsqueda
+- Formularios con validación visual
+- Mensajes flash para feedback
+
+**ARQUITECTURA TÉCNICA:**
+- Flask con Blueprint para organización
+- PostgreSQL con psycopg2-binary
+- Variables de entorno para configuración
+- Template Jinja2 con herencia
+- CSS personalizado + Bootstrap 5
+- JavaScript vanilla para interactividad
+
+**ESTRUCTURA DE ARCHIVOS:**
+supermart-app/
+ ├── app.py
+ ├── requirements.txt
+ ├── Dockerfile
+ ├── templates/
+				├── base.html │
+				├── dashboard.html │
+				├── productos.html │
+				├── ventas.html │
+				└── reportes.html
+ ├── static/ 
+		├── css/
+			└── style.css
+		└── js/
+			└── script.js
+ └── config.py
+
+**BASE DE DATOS:**
+- Usar variables de entorno: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+- Tablas: productos(id, nombre, precio, stock, categoria, proveedor), ventas(id, producto_id, cantidad, total, fecha)
+- Pool de conexiones para mejor rendimiento
+
+**REQUISITOS ESPECÍFICOS:**
+- Puerto: 5000
+- Host: 0.0.0.0 (para contenedor)
+- Manejo de errores robusto
+- Logging configurado
+- Documentación en código
+- Código limpio y comentado
