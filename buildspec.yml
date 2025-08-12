@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Instalando dependencias..."
+      
+  pre_build:
+    commands:
+      - echo "Pre-build phase iniciado en `date`"
+      - echo "Verificando archivos del proyecto..."
+      - ls -la
+      
+  build:
+    commands:
+      - echo "Build phase iniciado en `date`"
+      - echo "Copiando archivos al directorio de salida..."
+      
+  post_build:
+    commands:
+      - echo "Post-build phase completado en `date`"
+
+artifacts:
+  files:
+    - '**/*'
+  name: mi-aplicacion-build
