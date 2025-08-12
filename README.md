@@ -5,7 +5,7 @@ Aplicación web desplegada en AWS usando:
 - **CodePipeline**: Orquestación del pipeline CI/CD
 - **CodeBuild**: Construcción del proyecto
 - **S3**: Almacenamiento de archivos estáticos
-- **CloudFront**: CDN para distribución global
+- **CloudFront**: CDN para distribución global sa
 
 ## Estructura del Proyecto
 ```
